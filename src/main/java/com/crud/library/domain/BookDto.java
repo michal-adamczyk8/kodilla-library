@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 public class BookDto {
 
@@ -14,4 +13,8 @@ public class BookDto {
     private long titleId;
 
     private String status;
+
+    public void changeStatus(String newStatus) {
+        this.status = newStatus;
+    }
 }

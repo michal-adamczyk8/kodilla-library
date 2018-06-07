@@ -10,6 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 public class LendingDto {
+    private long lendingId;
 
     private long readerId;
 

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity(name = "titles")
@@ -34,6 +33,5 @@ public class Title {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-
-    private List<Book> books = new ArrayList<>();
+    private List<Book> books;
 }

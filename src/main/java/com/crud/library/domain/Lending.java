@@ -9,17 +9,19 @@ import javax.persistence.*;
 import java.util.Date;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity(name = "lendings")
 public class Lending {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long lendingId;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Reader.class)
     @JoinColumn(name = "readerId")
     private long readerId;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = Book.class,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "bookId")
     private long bookId;
 

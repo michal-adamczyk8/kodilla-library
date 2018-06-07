@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 public class TitleDto {
 
@@ -20,7 +19,7 @@ public class TitleDto {
 
     private long yearOfPublish;
 
-    private List<Book> books = new ArrayList<>();
+    private List<BookDto> books;
 
 
 }

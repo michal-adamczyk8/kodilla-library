@@ -1,6 +1,7 @@
 package com.crud.library.service;
 
 import com.crud.library.domain.Book;
+import com.crud.library.domain.Lending;
 import com.crud.library.domain.Reader;
 import com.crud.library.domain.Title;
 import com.crud.library.repository.BookRepository;
@@ -32,7 +33,7 @@ public class DbService {
         return readerRepository.save(reader);
     }
 
-    public Title savaeTitle(final Title title) {
+    public Title saveTitle(final Title title) {
         return titleRepository.save(title);
     }
 
@@ -44,8 +45,14 @@ public class DbService {
         return bookRepository.findBookByBookId(bookId);
     }
 
-    public Integer getTitleCount(final Title title) {
-        return titleRepository.countAllByTitle(title);
+    public Optional<Title> getTitle(final long titleId) {
+        return titleRepository.findById(titleId);
+    }
+
+    public Lending saveLending(final Lending lending){return lendingRepository.save(lending);}
+
+    public Optional<Reader> getReader(final long readerId) {
+        return readerRepository.findByReaderId(readerId);
     }
 
 }

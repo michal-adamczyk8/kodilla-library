@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 public class ReaderDto {
 
@@ -21,5 +20,6 @@ public class ReaderDto {
 
     private Date dateOfCreatingAccount;
 
-    private List<Lending> lendings = new ArrayList<>();
+    private List<LendingDto> lendings;
+
 }

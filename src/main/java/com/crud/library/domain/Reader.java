@@ -37,5 +37,5 @@ public class Reader {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-    private List<Lending> lendings = new ArrayList<>();
+    private List<Lending> lendings;
 }
