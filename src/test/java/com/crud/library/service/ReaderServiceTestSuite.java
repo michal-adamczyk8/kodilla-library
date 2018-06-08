@@ -2,7 +2,7 @@ package com.crud.library.service;
 
 import com.crud.library.domain.Reader;
 import com.crud.library.domain.ReaderDto;
-import com.crud.library.mapper.Mapper;
+import com.crud.library.mapper.ReaderMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -23,7 +23,7 @@ public class ReaderServiceTestSuite {
     ReaderService readerService;
 
     @Mock
-    Mapper mapper;
+    ReaderMapper readerMapper;
 
     @Mock
     DbService dbService;
@@ -37,14 +37,14 @@ public class ReaderServiceTestSuite {
                 new ArrayList<>());
 
         when(dbService.saveReader(any())).thenReturn(reader);
-        when(mapper.mapToReader(readerDto)).thenReturn(reader);
+        when(readerMapper.mapToReader(readerDto)).thenReturn(reader);
 
         //When
         readerService.addingUser(readerDto);
 
         //Then
         verify(dbService, times(1)).saveReader(any());
-        verify(mapper, times(1)).mapToReader(any());
+        verify(readerMapper, times(1)).mapToReader(any());
 
     }
 }

@@ -1,11 +1,9 @@
 package com.crud.library.service;
 
-import com.crud.library.controller.TitleNotFoundException;
-import com.crud.library.domain.Book;
-import com.crud.library.domain.BookDto;
-import com.crud.library.domain.Title;
-import com.crud.library.domain.TitleDto;
-import com.crud.library.mapper.Mapper;
+import com.crud.library.domain.*;
+import com.crud.library.exceptions.TitleNotFoundException;
+import com.crud.library.mapper.BookMapper;
+import com.crud.library.mapper.TitleMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,58 +24,61 @@ public class BookServiceTestSuite {
     BookService bookService;
 
     @Mock
-    Mapper mapper;
+    TitleMapper titleMapper;
+
+    @Mock
+    BookMapper bookMapper;
 
     @Mock
     DbService dbService;
 
     @Test
     public void shouldAddTitle() {
-        BookDto bookDto1 = new BookDto(1l, 1l, "Rented");
-        BookDto bookDto2 = new BookDto(2l, 1l, "Available");
-        Book book1 = new Book(2l, 1l, "Available");
-        Book book2 = new Book(2l, 1l, "Available");
+        BookDto bookDto1 = new BookDto(1l, 1l, BookStatus.RENTED);
+        BookDto bookDto2 = new BookDto(2l, 1l, BookStatus.AVAILABLE);
+        Book book1 = new Book(2l, 1l, BookStatus.AVAILABLE);
+        Book book2 = new Book(2l, 1l, BookStatus.AVAILABLE);
 
         TitleDto titleDto = new TitleDto(1l, "Wzgórze psów", "Jakub Żulczyk", 2017,
                 Arrays.asList(bookDto1, bookDto2));
         Title title = new Title(1l, "Wzgórze psów", "Jakub Żulczyk", 2017,
                 Arrays.asList(book1, book2));
 
-        when(mapper.mapToTitle(any())).thenReturn(title);
+        when(titleMapper.mapToTitle(any())).thenReturn(title);
         when(dbService.saveTitle(any())).thenReturn(title);
 
         //When
         bookService.addingTitle(titleDto);
 
         //Then
-        verify(mapper, times(1)).mapToTitle(any());
+        verify(titleMapper, times(1)).mapToTitle(any());
         verify(dbService, times(1)).saveTitle(any());
     }
 
     @Test
     public void shouldAddBook() {
         //Given
-        Book book = new Book(1l, 1l, "available");
-        BookDto bookDto = new BookDto(1l, 1l, "available");
+        Book book = new Book(1l, 1l, BookStatus.AVAILABLE);
+        BookDto bookDto = new BookDto(1l, 1l, BookStatus.AVAILABLE);
 
-        when(mapper.mapToBook(bookDto)).thenReturn(book);
+        when(bookMapper.mapToBook(bookDto)).thenReturn(book);
         when(dbService.saveBook(book)).thenReturn(book);
 
         //When
         bookService.addingBook(bookDto);
 
         //Then
-        verify(mapper, times(1)).mapToBook(any());
+        verify(bookMapper, times(1)).mapToBook(any());
         verify(dbService, times(1)).saveBook(any());
     }
 
     @Test
     public void shouldGetBookCount() throws TitleNotFoundException {
         //Given
-        Book book1 = new Book(1l, 1l, "available");
-        Book book2 = new Book(2l, 1l, "rented");
-        Book book3 = new Book(3l, 1l, "available");
-        Book book4 = new Book(4l, 1l, "rented");
+        Book book1 = new Book(1l, 1l, BookStatus.AVAILABLE);
+        Book book2 = new Book(2l, 1l, BookStatus.RENTED);
+        Book book3 = new Book(3l, 1l, BookStatus.AVAILABLE);
+        Book book4 = new Book(4l, 1l, BookStatus.RENTED);
 
         TitleDto titleDto = new TitleDto(1l, "Wzgórze Psów", "Jakub Żulczyk", 2017,
                 new ArrayList<>());

@@ -1,10 +1,12 @@
 package com.crud.library.service;
 
-import com.crud.library.controller.BookNotAvailbleException;
-import com.crud.library.controller.BookNotFoundException;
-import com.crud.library.controller.ReaderNotFoundException;
+import com.crud.library.exceptions.BookNotAvailbleException;
+import com.crud.library.exceptions.BookNotFoundException;
+import com.crud.library.exceptions.ReaderNotFoundException;
 import com.crud.library.domain.*;
-import com.crud.library.mapper.Mapper;
+import com.crud.library.mapper.BookMapper;
+import com.crud.library.mapper.LendingMapper;
+import com.crud.library.mapper.ReaderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,52 +16,88 @@ public class LendingService {
     DbService dbService;
 
     @Autowired
-    Mapper mapper;
+    LendingMapper lendingMapper;
 
-    public BookDto changingStatus(long bookId, String newStatus) throws BookNotFoundException {
-        if (!dbService.getBook(bookId).isPresent()) {
-            throw new BookNotFoundException();
+    @Autowired
+    BookMapper bookMapper;
+
+    @Autowired
+    ReaderMapper readerMapper;
+
+    public BookDto changingStatus(long bookId, BookStatus newStatus) {
+        try {
+            if (!dbService.getBook(bookId).isPresent()) {
+                throw new BookNotFoundException();
+            }
+            BookDto retrievedBook = bookMapper.mapToBookDto(dbService.getBook(bookId).get());
+            retrievedBook.changeStatus(newStatus);
+            dbService.saveBook(bookMapper.mapToBook(retrievedBook));
+            return retrievedBook;
+        } catch (BookNotFoundException e) {
+            System.out.println(e);
         }
-        BookDto retrievedBook = mapper.mapToBookDto(dbService.getBook(bookId).get());
-        retrievedBook.changeStatus(newStatus);
-        dbService.saveBook(mapper.mapToBook(retrievedBook));
-        return retrievedBook;
+        return new BookDto();
     }
 
-    public void lendBook(LendingDto lendingDto) throws Exception {
-        if (checkIfLendingOk(lendingDto)) {
-            ReaderDto readerDto = mapper.mapToReaderDto(dbService.getReader(lendingDto.getReaderId()).get());
-            readerDto.getLendings().add(lendingDto);
-            dbService.saveReader(mapper.mapToReader(readerDto));
-            BookDto bookDto = mapper.mapToBookDto(dbService.getBook(lendingDto.getBookId()).get());
-            bookDto.changeStatus("rented");
-            dbService.saveBook(mapper.mapToBook(bookDto));
+    public void lendBook(LendingDto lendingDto) {
+        try {
+            if (checkIfLendingOk(lendingDto)) {
+                ReaderDto readerDto = readerMapper.mapToReaderDto(dbService.getReader(lendingDto.getReaderId()).get());
+                readerDto.getLendings().add(lendingDto);
+                dbService.saveReader(readerMapper.mapToReader(readerDto));
+                BookDto bookDto = bookMapper.mapToBookDto(dbService.getBook(lendingDto.getBookId()).get());
+                bookDto.changeStatus(BookStatus.RENTED);
+                dbService.saveBook(bookMapper.mapToBook(bookDto));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
-    public void returnBook(LendingDto lendingDto) throws Exception {
-        if (checkIfLendingOk(lendingDto)) {
-            ReaderDto readerDto = mapper.mapToReaderDto(dbService.getReader(lendingDto.getReaderId()).get());
-            readerDto.getLendings().remove(lendingDto);
-            dbService.saveReader(mapper.mapToReader(readerDto));
-            BookDto bookDto = mapper.mapToBookDto(dbService.getBook(lendingDto.getBookId()).get());
-            bookDto.changeStatus("available");
-            dbService.saveBook(mapper.mapToBook(bookDto));
+    public void returnBook(LendingDto lendingDto) {
+        try {
+            if (checkIfBookAndReaderExists(lendingDto)) {
+                ReaderDto readerDto = readerMapper.mapToReaderDto(dbService.getReader(lendingDto.getReaderId()).get());
+                readerDto.getLendings().remove(lendingDto);
+                dbService.saveReader(readerMapper.mapToReader(readerDto));
+                BookDto bookDto = bookMapper.mapToBookDto(dbService.getBook(lendingDto.getBookId()).get());
+                bookDto.changeStatus(BookStatus.AVAILABLE);
+                dbService.saveBook(bookMapper.mapToBook(bookDto));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
-    public boolean checkIfLendingOk(LendingDto lendingDto) throws Exception {
+    public boolean checkIfLendingOk(LendingDto lendingDto) {
         boolean isLendingOk = false;
-        Lending lending = mapper.mapToLending(lendingDto);
-        if (!dbService.getReader(lending.getReaderId()).isPresent()) {
-            throw new ReaderNotFoundException();
-        } else if (!dbService.getBook(lending.getBookId()).isPresent()) {
-            throw new BookNotFoundException();
-
-        } else if ((dbService.getBook(lending.getBookId()).get().getStatus() == "available")) {
-            throw new BookNotAvailbleException();
+        try {
+            Lending lending = lendingMapper.mapToLending(lendingDto);
+            if(!(dbService.getBook(lending.getBookId()).get().getStatus().toString() == "available")) {
+                throw new BookNotAvailbleException();
+            }
+            else if (checkIfBookAndReaderExists(lendingDto)) {
+                isLendingOk = true;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        isLendingOk = true;
+        return isLendingOk;
+    }
+
+    public boolean checkIfBookAndReaderExists(LendingDto lendingDto) {
+        boolean isLendingOk = false;
+        try {
+            Lending lending = lendingMapper.mapToLending(lendingDto);
+            if (!dbService.getReader(lending.getReaderId()).isPresent()) {
+                throw new ReaderNotFoundException();
+            } else if (!dbService.getBook(lending.getBookId()).isPresent()) {
+                throw new BookNotFoundException();
+            }
+            isLendingOk = true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return isLendingOk;
     }
 }

@@ -23,7 +23,7 @@ public class Book {
     private long titleId;
 
     @Column(name = "status")
-    private String status;
+    private BookStatus status;
 
 
 

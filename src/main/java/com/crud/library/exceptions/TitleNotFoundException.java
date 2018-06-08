@@ -1,4 +1,4 @@
-package com.crud.library.controller;
+package com.crud.library.exceptions;
 
 public class TitleNotFoundException extends Exception {
 }

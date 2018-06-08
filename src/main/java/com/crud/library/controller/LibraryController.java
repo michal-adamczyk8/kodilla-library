@@ -1,6 +1,8 @@
 package com.crud.library.controller;
 
 import com.crud.library.domain.*;
+import com.crud.library.exceptions.BookNotFoundException;
+import com.crud.library.exceptions.TitleNotFoundException;
 import com.crud.library.service.BookService;
 import com.crud.library.service.LendingService;
 import com.crud.library.service.ReaderService;
@@ -38,7 +40,7 @@ public class LibraryController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "changeStatus")
-    public BookDto changeStatus(@RequestParam long bookId, String newStatus) throws BookNotFoundException {
+    public BookDto changeStatus(@RequestParam long bookId, BookStatus newStatus) throws BookNotFoundException {
         return lendingService.changingStatus(bookId, newStatus);
     }
 

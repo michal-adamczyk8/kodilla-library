@@ -1,5 +1,18 @@
 package com.crud.library.domain;
 
 public enum BookStatus {
-    AVAILABEL, LENDED, DESTROYED, LOST
+    AVAILABLE("available"),
+    RENTED("rented"),
+    DESTROYED("destroyed"),
+    LOST("lost");
+
+    private final String status;
+
+    BookStatus(String status) {
+        this.status = status;
+    }
+
+    public String toString() {
+        return status;
+    }
 }

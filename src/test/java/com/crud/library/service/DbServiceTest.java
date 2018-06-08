@@ -1,6 +1,7 @@
 package com.crud.library.service;
 
 import com.crud.library.domain.Book;
+import com.crud.library.domain.BookStatus;
 import com.crud.library.domain.Reader;
 import com.crud.library.domain.Title;
 import com.crud.library.repository.BookRepository;
@@ -71,7 +72,7 @@ public class DbServiceTest {
     @Test
     public void shouldGetBook() {
         //Given
-        Book book = new Book(1l, 1l, "available");
+        Book book = new Book(1l, 1l, BookStatus.AVAILABLE);
         when(bookRepository.findBookByBookId(book.getBookId())).thenReturn(Optional.of(book));
 
         //When
@@ -84,7 +85,7 @@ public class DbServiceTest {
     @Test
     public void shouldSaveBook() {
         //Given
-        Book book = new Book(1l, 1l, "available");
+        Book book = new Book(1l, 1l, BookStatus.AVAILABLE);
         when(bookRepository.save(book)).thenReturn(book);
 
         //When
