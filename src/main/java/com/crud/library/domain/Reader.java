@@ -7,12 +7,14 @@ import lombok.Setter;
 
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity(name = "readers")
@@ -29,7 +31,7 @@ public class Reader {
     private String lastName;
 
     @Column(name = "createdOn")
-    private Date dateOfCreatingAccount;
+    private LocalDate dateOfCreatingAccount;
 
     @OneToMany(
             targetEntity = Lending.class,

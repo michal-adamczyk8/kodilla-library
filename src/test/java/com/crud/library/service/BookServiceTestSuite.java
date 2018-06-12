@@ -88,7 +88,7 @@ public class BookServiceTestSuite {
         when(dbService.getTitle(anyLong())).thenReturn(Optional.of(title));
 
         //When
-        long bookCount = bookService.gettingBookCount(titleDto);
+        long bookCount = bookService.gettingBookCount(titleDto.getTitleId());
 
         //Then
         Assert.assertEquals(2, bookCount);

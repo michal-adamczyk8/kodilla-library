@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -38,7 +39,7 @@ public class LendingServiceTestSuite {
     LendingMapper lendingMapper;
 
     @Test
-    public void shouldChangeStatus() throws BookNotFoundException {
+    public void shouldChangeStatus() {
         //Given
         Book book = new Book(1L, 1L, BookStatus.AVAILABLE);
         BookDto bookDto = new BookDto(1L, 1L, BookStatus.AVAILABLE);
@@ -54,18 +55,18 @@ public class LendingServiceTestSuite {
     }
 
     @Test
-    public void shouldLendBook() throws Exception {
+    public void shouldLendBook() {
         //Given
         LendingDto lendingDto = new LendingDto(1L, 1L, 1L,
-                new Date(2018, 1, 1), new Date(2018, 3, 3));
+                "2018-01-01", "2018-03-03");
         Lending lending = new Lending(1L, 1L, 1L,
-                new Date(2018, 1, 1), new Date(2018, 3, 3));
+                LocalDate.of(2018, 1, 1), LocalDate.of(2018, 3, 3));
         BookDto bookDto = new BookDto(1L, 1L, BookStatus.AVAILABLE);
         Book book = new Book(1L, 1L, BookStatus.AVAILABLE);
         ReaderDto readerDto = new ReaderDto(1L, "Michał", "Adamczyk",
-                new Date(2018, 1, 1), new ArrayList<>());
+                "2018-01-01", new ArrayList<>());
         Reader reader = new Reader(1L, "Michał", "Adamczyk",
-                new Date(2018, 1, 1), new ArrayList<>());
+                LocalDate.of(2018, 1, 1), new ArrayList<>());
 
         when(dbService.getReader(anyLong())).thenReturn(Optional.of(reader));
         when(readerMapper.mapToReaderDto(any())).thenReturn(readerDto);
@@ -86,26 +87,24 @@ public class LendingServiceTestSuite {
         Assert.assertEquals(1L, retrievedLendingDto.getReaderId());
         Assert.assertEquals(1L, retrievedLendingDto.getLendingId());
         Assert.assertEquals(1L, retrievedLendingDto.getBookId());
-        Assert.assertEquals(new Date(2018, 1, 1), retrievedLendingDto.getDateOfLending());
-        Assert.assertEquals(new Date(2018, 3, 3), retrievedLendingDto.getDateOfReturning());
         Assert.assertEquals("rented", bookDto.getStatus().toString());
     }
 
     @Test
-    public void shouldReturnBook() throws Exception {
+    public void shouldReturnBook() {
         //Given
         LendingDto lendingDto = new LendingDto(1L, 1L, 1L,
-                new Date(2018, 1, 1), new Date(2018, 3, 3));
+                "2018-01-01", "2018-03-03");
         Lending lending = new Lending(1L, 1L, 1L,
-                new Date(2018, 1, 1), new Date(2018, 3, 3));
+                LocalDate.of(2018, 1, 1), LocalDate.of(2018, 3, 3));
         BookDto bookDto = new BookDto(1L, 1L, BookStatus.AVAILABLE);
         Book book = new Book(1L, 1L, BookStatus.AVAILABLE);
         List<LendingDto> lendingDtoList = new ArrayList<>();
         lendingDtoList.add(lendingDto);
         ReaderDto readerDto = new ReaderDto(1L, "Michał", "Adamczyk",
-                new Date(2018, 1, 1), lendingDtoList);
+                "2018-01-01", lendingDtoList);
         Reader reader = new Reader(1L, "Michał", "Adamczyk",
-                new Date(2018, 1, 1), Arrays.asList(lending));
+                LocalDate.of(2018, 1, 1), Arrays.asList(lending));
 
         when(dbService.getReader(anyLong())).thenReturn(Optional.of(reader));
         when(readerMapper.mapToReaderDto(any())).thenReturn(readerDto);
@@ -123,5 +122,6 @@ public class LendingServiceTestSuite {
         //Then
         Assert.assertEquals(0, readerDto.getLendings().size());
     }
+
 
 }

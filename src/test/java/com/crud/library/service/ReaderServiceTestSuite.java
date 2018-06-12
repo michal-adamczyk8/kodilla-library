@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -31,9 +32,9 @@ public class ReaderServiceTestSuite {
     @Test
     public void shouldAddReader() {
         //Given
-        Reader reader = new Reader(1l, "Michał", "Adamczyk", new Date(2018, 01, 01),
+        Reader reader = new Reader(1l, "Michał", "Adamczyk", LocalDate.of(2018, 01, 01),
                 new ArrayList<>());
-        ReaderDto readerDto = new ReaderDto(1l, "Michał", "Adamczyk", new Date(2018, 01, 01),
+        ReaderDto readerDto = new ReaderDto(1l, "Michał", "Adamczyk", "2018-01-01",
                 new ArrayList<>());
 
         when(dbService.saveReader(any())).thenReturn(reader);

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class ReaderDto {
 
@@ -18,7 +19,7 @@ public class ReaderDto {
 
     private String lastName;
 
-    private Date dateOfCreatingAccount;
+    private String dateOfCreatingAccount;
 
     private List<LendingDto> lendings;
 

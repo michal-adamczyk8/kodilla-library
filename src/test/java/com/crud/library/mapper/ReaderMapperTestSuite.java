@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -30,7 +31,7 @@ public class ReaderMapperTestSuite {
     public void shouldMapToReader() {
         //Given
         ReaderDto readerDto = new ReaderDto(1l, "Michał", "Adamczyk",
-                new Date(2015, 5, 5), new ArrayList<>());
+                "2015-05-05", new ArrayList<>());
         when(lendingMapper.mapToLendingList(any())).thenReturn(new ArrayList<>());
 
         //When
@@ -44,7 +45,7 @@ public class ReaderMapperTestSuite {
     public void shouldMapToReaderDto() {
         //Given
         Reader reader = new Reader(1L, "Michał", "Adamczyk",
-                new Date(2018, 1, 2), new ArrayList<>());
+                LocalDate.of(2018, 1, 2), new ArrayList<>());
 
         when(lendingMapper.mapToLendingDtoList(anyList())).thenReturn(new ArrayList<>());
 

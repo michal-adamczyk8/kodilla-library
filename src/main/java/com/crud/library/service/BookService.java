@@ -25,12 +25,12 @@ public class BookService {
         dbService.saveBook(bookMapper.mapToBook(bookDto));
     }
 
-    public long gettingBookCount(TitleDto titleDto) {
+    public long gettingBookCount(long titleId) {
         try {
-            if (!dbService.getTitle(titleDto.getTitleId()).isPresent()){
+            if (!dbService.getTitle(titleId).isPresent()){
                 throw new TitleNotFoundException();
             }
-            long result = dbService.getTitle(titleDto.getTitleId()).get().getBooks()
+            long result = dbService.getTitle(titleId).get().getBooks()
                     .stream()
                     .filter(p->p.getStatus().toString() == "available")
                     .count();

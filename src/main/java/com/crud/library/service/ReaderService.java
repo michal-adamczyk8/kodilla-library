@@ -20,8 +20,4 @@ public class ReaderService {
         dbService.saveReader(readerMapper.mapToReader(readerDto));
     }
 
-    public Optional<Reader> getReader(long readerId) {
-        return dbService.getReader(readerId);
-    }
-
 }

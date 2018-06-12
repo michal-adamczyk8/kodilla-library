@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -36,16 +37,13 @@ public class DbServiceTest {
     BookRepository bookRepository;
 
     @Mock
-    LendingRepository lendingRepository;
-
-    @Mock
     TitleRepository titleRepository;
 
     @Test
     public void shouldSaveReader() {
         //Given
         Reader reader = new Reader(1l, "Michał", "Adamczyk",
-                new Date(2018, 01, 01), new ArrayList<>());
+                LocalDate.of(2018, 01, 01), new ArrayList<>());
         when(readerRepository.save(reader)).thenReturn(reader);
 
         //When
@@ -53,6 +51,20 @@ public class DbServiceTest {
 
         //Then
         verify(readerRepository, times(1)).save(any());
+    }
+
+    @Test
+    public void shouldAddTitle() {
+        //Given
+        Title title = new Title(1L, "Wzgórze Psów", "Jakub Żulczyk", 2017,
+                new ArrayList<>());
+        when(titleRepository.save(any())).thenReturn(title);
+
+        //When
+        dbService.saveTitle(title);
+
+        //Given
+        verify(titleRepository, times(1)).save(any());
     }
 
     @Test

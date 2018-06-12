@@ -16,7 +16,7 @@ public class LendingDto {
 
     private long bookId;
 
-    private Date dateOfLending;
+    private String dateOfLending;
 
-    private Date dateOfReturning;
+    private String dateOfReturning;
 }

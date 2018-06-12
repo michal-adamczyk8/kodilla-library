@@ -49,8 +49,6 @@ public class DbService {
         return titleRepository.findById(titleId);
     }
 
-    public Lending saveLending(final Lending lending){return lendingRepository.save(lending);}
-
     public Optional<Reader> getReader(final long readerId) {
         return readerRepository.findByReaderId(readerId);
     }
