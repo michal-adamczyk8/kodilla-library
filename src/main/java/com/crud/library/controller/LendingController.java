@@ -13,18 +13,18 @@ public class LendingController {
     @Autowired
     LendingService lendingService;
 
-    @RequestMapping(method = RequestMethod.PUT, value = "lendBook")
+    @RequestMapping(method = RequestMethod.PUT, value = "lending")
     public void lendBook(@RequestBody LendingDto lendingDto) {
         lendingService.lendBook(lendingDto);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "returnBook")
+    @RequestMapping(method = RequestMethod.PUT, value = "lendingBack")
     public void returnBook(@RequestBody LendingDto lendingDto) {
         lendingService.returnBook(lendingDto);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "changeStatus")
-    public BookDto changeStatus(@RequestParam long bookId, BookStatus newStatus) {
+    @RequestMapping(method = RequestMethod.PUT, value = "status")
+    public BookDto changeStatus(@RequestParam long bookId, @RequestParam BookStatus newStatus) {
         return lendingService.changingStatus(bookId, newStatus);
     }
 }

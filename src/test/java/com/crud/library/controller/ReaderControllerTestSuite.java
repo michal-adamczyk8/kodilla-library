@@ -41,7 +41,7 @@ public class ReaderControllerTestSuite {
         Gson gson = new Gson();
         String jsonContent = gson.toJson(readerDto);
         // /When & Then
-        mockMvc.perform(post("/v1/library/addUser")
+        mockMvc.perform(post("/v1/library/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent)
                 .characterEncoding("UTF-8"))

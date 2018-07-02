@@ -14,17 +14,17 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/addTitle", consumes = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/title", consumes = APPLICATION_JSON_VALUE)
     public void addTitle(@RequestBody TitleDto titleDto) {
         bookService.addingTitle(titleDto);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/addBook", consumes = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/book", consumes = APPLICATION_JSON_VALUE)
     public void addBook(@RequestBody BookDto bookDto) {
         bookService.addingBook(bookDto);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getBookCount")
+    @RequestMapping(method = RequestMethod.GET, value = "/bookCount")
     public long getBookCount(@RequestParam long titleId) {
         return bookService.gettingBookCount(titleId);
     }

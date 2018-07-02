@@ -32,7 +32,7 @@ public class BookService {
             }
             long result = dbService.getTitle(titleId).get().getBooks()
                     .stream()
-                    .filter(p->p.getStatus().toString() == "available")
+                    .filter(p->p.getStatus().toString().equals("available"))
                     .count();
             return result;
         } catch (TitleNotFoundException e) {
@@ -40,6 +40,8 @@ public class BookService {
         }
         return -1L;
     }
+
+    //TODO : dodać metode ktora wyswietli liste ksiazek, egzemplarzy
 
 
 

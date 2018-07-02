@@ -16,7 +16,7 @@ public class ReaderController {
     @Autowired
     ReaderService readerService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/addUser", consumes = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/user", consumes = APPLICATION_JSON_VALUE)
     public void addReader(@RequestBody ReaderDto readerDto) {
         readerService.addingUser(readerDto);
     }

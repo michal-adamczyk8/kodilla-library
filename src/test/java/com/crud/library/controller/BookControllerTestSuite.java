@@ -7,6 +7,7 @@ import com.crud.library.service.BookService;
 import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,7 +19,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -42,7 +43,7 @@ public class BookControllerTestSuite {
         String jsonContent = gson.toJson(titleDto);
 
         //When & Then
-        mockMvc.perform(post("/v1/library/addTitle")
+        mockMvc.perform(post("/v1/library/title")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -55,13 +56,13 @@ public class BookControllerTestSuite {
         BookDto bookDto = new BookDto(1l, 1l, BookStatus.AVAILABLE);
 
         Gson gson = new Gson();
-        String jsonContet = gson.toJson(bookDto);
+        String jsonContent = gson.toJson(bookDto);
 
         //When & Then
-        mockMvc.perform(post("/v1/library/addBook")
+        mockMvc.perform(post("/v1/library/book")
         .contentType(MediaType.APPLICATION_JSON)
         .characterEncoding("UTF-8")
-        .content(jsonContet))
+        .content(jsonContent))
         .andExpect(status().isOk());
     }
 
@@ -73,15 +74,12 @@ public class BookControllerTestSuite {
         Gson gson = new Gson();
         String jsonContent = gson.toJson(1L);
         //When & Then
-        mockMvc.perform(get("/v1/library/getBookCount?titleId=1")
+        mockMvc.perform(get("/v1/library/bookCount?titleId=1")
             .contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .content(jsonContent))
-            .andExpect((ResultMatcher) jsonPath("$", 3L))
+            .andExpect(content().json("3"))
             .andExpect(status().isOk());
-
-
-
     }
 
 }
